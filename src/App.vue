@@ -1,16 +1,20 @@
+<template>
+  <h1> Todo App</h1>
+  <TodoForm @addTodo="addTodo" />
+  <h2>Todo List</h2>
+  <TodoList :todos="todos" @removeTodo="removeTodo" @toggleCompleteStatus="toggleCompleteStatus" />
+  <h4 v-if="todos.length === 0">You have no todo tasks</h4>
+</template>
+
 <script setup>
 import { ref, onMounted } from 'vue';
 
-const newTodo = ref('');
-const defaultTodos = [
-  { task: 'Learn Vue 3', completed: false, index: 1 },
-  { task: 'Learn React', completed: false, index: 2 },
-  { task: 'Learn Angular', completed: false, index: 3 }
-];
-const todosData = JSON.parse(localStorage.getItem('Todos')) || defaultTodos;
-const todos = ref(todosData);
+import TodoForm from './components/TodoForm.vue';
+import TodoList from './components/TodoList.vue';
 
-function addTodo() {
+const todos = ref([]);
+
+function addTodo (newTodo) {
   if (newTodo.value) {
     const todoTask = {
       task: newTodo.value,
@@ -19,7 +23,6 @@ function addTodo() {
     }
     todos.value = [...todos.value, todoTask]
   }
-  newTodo.value = '';
   saveTodos()
 }
 
@@ -29,7 +32,7 @@ function removeTodo(index) {
   saveTodos()
 }
 
-function completedTodo (todo) {
+function toggleCompleteStatus (todo) {
   todo.completed = !todo.completed
   saveTodos()
 }
@@ -39,26 +42,14 @@ function saveTodos() {
 }
 
 onMounted(() => {
-  saveTodos()
+    const defaultTodos = [
+        { task: 'Learn Vue 3', completed: false, index: 1 },
+        { task: 'Learn React', completed: true, index: 2 },
+        { task: 'Learn Angular', completed: false, index: 3 }
+    ];
+    const todosData = JSON.parse(localStorage.getItem('Todos')) || defaultTodos;
+    todos.value = todosData;
+    saveTodos()
 })
-</script>
 
-<template>
-  <h1> Todo App</h1>
-  <form @submit.prevent="addTodo()">
-    <label for="newTodo">Add a new todo</label>
-    <input v-model="newTodo" placeholder="Add a new todo">
-    <button type="submit">Add</button>
-  </form>
-  <h2>Todo List</h2>
-  <ul v-for="(todo, index) in todos" :key="index">
-    <li>
-      <div>
-        <input type="checkbox" @change="completedTodo(todo)">
-        <span :class="{ completed: todo.completed }">{{ todo.task }}</span>
-      </div>
-      <button @click="removeTodo(index)">Remove</button>
-    </li>
-  </ul>
-  <h4 v-if="todos.length === 0">You have no todo tasks</h4>
-</template>
+</script>
