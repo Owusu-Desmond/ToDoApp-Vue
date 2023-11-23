@@ -2,7 +2,12 @@
   <h1> Todo App</h1>
   <TodoForm @addTodo="addTodo" />
   <h2>Todo List</h2>
-  <TodoList :todos="todos" @removeTodo="removeTodo" @toggleCompleteStatus="toggleCompleteStatus" />
+  <TodoList 
+    :todos="todos" 
+    @removeTodo="removeTodo" 
+    @toggleCompleteStatus="toggleCompleteStatus"
+    @clearAllCompleted="clearAllCompleted"
+  />
   <h4 v-if="todos.length === 0">You have no todo tasks</h4>
 </template>
 
@@ -14,10 +19,10 @@ import TodoList from './components/TodoList.vue';
 
 const todos = ref([]);
 
-function addTodo (newTodo) {
-  if (newTodo.value) {
+const addTodo = (newTodo) => {
+  if (newTodo !== '') {
     const todoTask = {
-      task: newTodo.value,
+      task: newTodo,
       completed: false,
       index: todos.value.length + 1
     }
@@ -26,19 +31,25 @@ function addTodo (newTodo) {
   saveTodos()
 }
 
-function removeTodo(index) {
+const removeTodo = (index) => {
   const newTodos = todos.value.filter(todo => todo.index !== index)
+  newTodos.map((todo, index) => todo.index = index + 1)
   todos.value = newTodos
   saveTodos()
 }
 
-function toggleCompleteStatus (todo) {
+const toggleCompleteStatus = (todo) => {
   todo.completed = !todo.completed
   saveTodos()
 }
 
-function saveTodos() {
-  localStorage.setItem('Todos', JSON.stringify(todos.value))
+const saveTodos = () => localStorage.setItem('Todos', JSON.stringify(todos.value));
+
+const clearAllCompleted = () => {
+  const newTodos = todos.value.filter(todo => todo.completed !== true);
+  newTodos.map((todo, index) => todo.index = index + 1);
+  todos.value = newTodos;
+  saveTodos();
 }
 
 onMounted(() => {

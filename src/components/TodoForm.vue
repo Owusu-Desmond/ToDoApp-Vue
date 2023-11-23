@@ -9,13 +9,13 @@
 
 import { ref, defineEmits } from 'vue';
 
-const newTodo = ref('');
+let newTodo = ref('');
+
 const emit = defineEmits(['addTodo'])
 
-function addTodo() {
-    // emit an event to the parent component to add a new todo
+const addTodo = () => {
     emit('addTodo', newTodo.value)
-  newTodo.value = '';
+    newTodo.value = ''
 }
 
 </script>
