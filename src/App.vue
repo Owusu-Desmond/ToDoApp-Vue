@@ -32,11 +32,8 @@ const addTodo = (newTodo) => {
 }
 
 const removeTodo = (index) => {
-  const newTodos = todos.value.filter(todo => todo.index !== index)
-  newTodos.map((todo, index) => todo.index = index + 1)
-  todos.value = newTodos
-  saveTodos()
-}
+  updateTodos((todo) => todo.index !== index);
+};
 
 const toggleCompleteStatus = (todo) => {
   todo.completed = !todo.completed
@@ -46,11 +43,15 @@ const toggleCompleteStatus = (todo) => {
 const saveTodos = () => localStorage.setItem('Todos', JSON.stringify(todos.value));
 
 const clearAllCompleted = () => {
-  const newTodos = todos.value.filter(todo => todo.completed !== true);
-  newTodos.map((todo, index) => todo.index = index + 1);
+  updateTodos((todo) => !todo.completed);
+};
+
+const updateTodos = (filterFunction) => {
+  const newTodos = todos.value.filter(filterFunction);
+  newTodos.map((todo, index) => (todo.index = index + 1));
   todos.value = newTodos;
   saveTodos();
-}
+};
 
 onMounted(() => {
     const defaultTodos = [
