@@ -1,21 +1,18 @@
 <template>
-  <h1> Todo App</h1>
-  <TodoForm @addTodo="addTodo" />
-  <h2>Todo List</h2>
-  <TodoList 
-    :todos="todos" 
-    @removeTodo="removeTodo" 
-    @toggleCompleteStatus="toggleCompleteStatus"
-    @clearAllCompleted="clearAllCompleted"
-  />
-  <h4 v-if="todos.length === 0">You have no todo tasks</h4>
+  <div id="app">
+    <Nav />
+    <router-view />
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 
+import Nav from './components/Nav.vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoList from './components/TodoList.vue';
+
+import './assets/styles.css';
 
 const todos = ref([]);
 
