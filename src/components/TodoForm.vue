@@ -7,15 +7,26 @@
 
 <script setup>
 
-import { ref, defineEmits } from 'vue';
+import { ref, inject } from 'vue';
 
 let newTodo = ref('');
 
-const emit = defineEmits(['addTodo'])
+const todoStore = inject('todoStore');
+
+console.log(todoStore);
 
 const addTodo = () => {
-    emit('addTodo', newTodo.value)
-    newTodo.value = ''
+  if (newTodo.value.trim() === '') {
+    return;
+  }
+
+  todoStore.addTodo({
+    id: new Date().getTime(),
+    title: newTodo.value,
+    completed: false,
+  });
+
+  newTodo.value = '';
 }
 
 </script>

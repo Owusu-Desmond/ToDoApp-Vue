@@ -1,6 +1,6 @@
 <template>
     <ul v-for="(todo, index) in todos" :key="index">
-        <Todo :todo="todo" @toggleComplete="toggleCompleteStatus(todo)" @remove="removeTodo(todo.index)" />
+        <Todo :todo="todo" />
     </ul>
     <button v-if="todos.length !== 0" @click="clearAllCompleted">Clear All Completed</button>
 </template>
@@ -9,16 +9,24 @@
     
 import Todo from './Todo.vue';
 
-const props = defineProps({
-    todos: Array,
-})
+import { inject, watchEffect, ref } from 'vue';
 
+const todoStore = inject('todoStore');
 
-const emit = defineEmits(['toggleCompleteStatus', 'removeTodo', 'clearAllCompleted'])
+if (!todoStore) {
+  throw new Error('todoStore is not provided');
+}
 
-const removeTodo  = (index) => emit('removeTodo', index);
-const toggleCompleteStatus = (todo) => emit('toggleCompleteStatus', todo)
-const clearAllCompleted = () => emit('clearAllCompleted')
+const clearAllCompleted = () => {
+    todoStore.clearAllCompleted();
+}
+ 
+const todos = ref(todoStore.todos);
 
+console.log(todos.value);
+
+watchEffect(() => { // 
+    todos.value = todoStore.todos;
+});
 
 </script>
