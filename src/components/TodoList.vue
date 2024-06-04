@@ -25,7 +25,7 @@ const todos = ref(todoStore.todos);
 
 console.log(todos.value);
 
-watchEffect(() => { // 
+watchEffect(() => {
     todos.value = todoStore.todos;
 });
 
