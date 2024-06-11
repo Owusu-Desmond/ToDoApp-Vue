@@ -15,7 +15,7 @@ const routes = [
         component: TodoList
     },
     {
-        path: '/add-todo',
+        path: '/addTodo',
         name: 'AddToDo',
         component: AddToDo
     }

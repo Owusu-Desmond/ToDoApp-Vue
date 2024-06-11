@@ -6,10 +6,7 @@
         <router-link to="/todos">Todo List</router-link>
       </li>
       <li>
-        <router-link to="/add-todo">Add Todo</router-link>
-      </li>
-      <li>
-        <router-link to="/recent-deleted">Recent Deleted Tasks</router-link>
+        <router-link to="/addTodo">Add Todo</router-link>
       </li>
     </ul>
   </nav>

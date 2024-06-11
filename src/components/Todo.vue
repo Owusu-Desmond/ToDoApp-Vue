@@ -20,7 +20,7 @@ const props = defineProps({
 const todoStore = inject('todoStore');
 
 const toggleComplete = (id) => {
-    todoStore.toggleComplete(id);
+    todoStore.toggleCompleted(id);
 }
 
 const remove = (id) => {
